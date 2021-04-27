@@ -11,7 +11,6 @@ namespace Nexxera.Domain
         public Account Account { get; set; }
         public int PeriodId { get; set; }
         public Period Period { get; set; }
-
         public List<CreditCardHistory> CreditCardHistories { get; set; }
         
     }
