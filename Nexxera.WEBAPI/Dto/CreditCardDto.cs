@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nexxera.WEBAPI.Dto
@@ -15,10 +16,6 @@ namespace Nexxera.WEBAPI.Dto
         [Required (ErrorMessage="Conta é Obrigatório")]
         public int AccountId { get; set; }
         public AccountDto Account { get; set; }
-        public int PeriodId { get; set; }
-        
-        [Required (ErrorMessage="Periodo é Obrigatório")]
-         public PeriodDto Period { get; set; }
-        // public List<CreditCardHistory> CreditCardHistories { get; set; }
+ 
     }
 }

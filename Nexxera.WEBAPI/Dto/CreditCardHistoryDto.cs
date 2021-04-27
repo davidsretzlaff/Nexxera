@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nexxera.WEBAPI.Dto
@@ -11,5 +12,12 @@ namespace Nexxera.WEBAPI.Dto
         public decimal Value { get; set; }        
         public decimal BalanceCreditCardHistory { get; set; }
         public int CreditCardId { get; set; }
+
+        [Required (ErrorMessage="Periodo é Obrigatório")]
+        public int PeriodId { get; set; }
+        
+         public PeriodDto Period { get; set; }
+         public List<CreditCardHistoryDto> CreditCardHistories { get; set; }
+
     }
 }

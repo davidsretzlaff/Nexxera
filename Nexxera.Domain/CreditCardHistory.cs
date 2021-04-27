@@ -9,6 +9,10 @@ namespace Nexxera.Domain
         public decimal Value { get; set; }
         public decimal BalanceCreditCardHistory { get; set; }
         public int CreditCardId { get; set; }
+
+        
+        public int PeriodId { get; set; }
+        public Period Period { get; set; }
         
     }
 }

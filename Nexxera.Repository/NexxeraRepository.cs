@@ -56,14 +56,13 @@ namespace Nexxera.Repository
 
         public async Task<CreditCard> GetCreditCard(int accountId, int periodId)
         {
-            IQueryable<CreditCard> query = _context.CreditCards.
-            Include(e => e.Period).
-            Include(e => e.CreditCardHistories);
+            IQueryable<CreditCard> query = _context.CreditCards.            
+            Include(e => e.CreditCardHistories).Include( e => e.CreditCardHistories.Select( c => c.PeriodId == periodId));
 
             query = query
                         .AsNoTracking()
                         .OrderBy(c => c.Id)
-                        .Where(c => c.AccountId == accountId && c.PeriodId == periodId );
+                        .Where(c => c.AccountId == accountId);
             return await query.FirstOrDefaultAsync();
         }
 
