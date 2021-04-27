@@ -30,7 +30,8 @@ namespace Nexxera.WEBAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddScoped<INexxeraRepository,NexxeraRepository>();
+            services.AddCors();
             
         }
 

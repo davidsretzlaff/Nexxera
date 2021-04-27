@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Nexxera.Domain
 {
     public class CreditCard
@@ -9,5 +11,8 @@ namespace Nexxera.Domain
         public Account Account { get; set; }
         public int PeriodId { get; set; }
         public Period Period { get; set; }
+
+        public List<CreditCardHistory> CreditCardHistories { get; set; }
+        
     }
 }

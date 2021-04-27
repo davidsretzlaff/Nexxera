@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Nexxera.Domain
 {
     public class Account 
@@ -8,5 +10,8 @@ namespace Nexxera.Domain
         public int CustomerId { get; set; }
 
         public Customer Customer { get; set; }
+
+        public List<CreditCard> CreditCards { get; set; }
+        public List<DebtHistory> DebtHistories { get; set; }
     }
 }
