@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Nexxera.WEBAPI.Dto
@@ -14,7 +15,7 @@ namespace Nexxera.WEBAPI.Dto
 
         public CustomerDto Customer { get; set; }
 
-        // public List<CreditCard> CreditCards { get; set; }
-        // public List<DebtHistory> DebtHistories { get; set; }
+         public List<CreditCardDto> CreditCards { get; set; }
+         public List<DebtHistoryDto> DebtHistories { get; set; }
     }
 }
