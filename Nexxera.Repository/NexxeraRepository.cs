@@ -31,9 +31,10 @@ namespace Nexxera.Repository
 
         public async Task<Account> GetAccount(int customerId)
         {
-            IQueryable<Account> query = _context.Accounts.
-            Include(e => e.CreditCards).
-            Include(e => e.DebtHistories);
+            IQueryable<Account> query = _context.Accounts
+            .Include(e => e.Customer)
+            .Include(e => e.CreditCards)
+            .Include(e => e.DebtHistories);
 
             query = query
                         .AsNoTracking()
@@ -54,28 +55,37 @@ namespace Nexxera.Repository
             return await query.ToArrayAsync();
         }
 
-        public async Task<CreditCard> GetCreditCard(int accountId, int periodId)
+        public async Task<CreditCard> GetCreditCard(int accountId, int? periodId)
         {
-            IQueryable<CreditCard> query = _context.CreditCards.            
-            Include(e => e.CreditCardHistories).Include( e => e.CreditCardHistories.Select( c => c.PeriodId == periodId));
-
-            query = query
-                        .AsNoTracking()
-                        .OrderBy(c => c.Id)
-                        .Where(c => c.AccountId == accountId);
-            return await query.FirstOrDefaultAsync();
-        }
-
-        public async Task<DebtHistory> GetDebtHistory(int accountId, int periodId)
-        {
-            IQueryable<DebtHistory> query = _context.DebtHistories.
-            Include(e => e.Period);
+            IQueryable<CreditCard> query = _context.CreditCards
+            .Include(e => e.CreditCardHistories)
+            .ThenInclude(x => x.Period);
             
 
             query = query
                         .AsNoTracking()
                         .OrderBy(c => c.Id)
-                        .Where(c => c.AccountId == accountId && c.PeriodId == periodId );
+                        .Where(c => c.AccountId == accountId);
+            
+            if(periodId.HasValue){
+                    // query = query.Where(x => x.CreditCardHistories.Any(subitem => subitem.PeriodId == periodId));
+            }
+            
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<DebtHistory> GetDebtHistory(int accountId, int? periodId)
+        {
+            IQueryable<DebtHistory> query = _context.DebtHistories;            
+
+            query = query.Include(e => e.Period)
+                        .AsNoTracking()
+                        .OrderBy(c => c.Id)
+                        .Where(c => c.AccountId == accountId);
+            if(periodId.HasValue)
+            {
+                query =query.Where(c => c.PeriodId == periodId );
+            }
             return await query.FirstOrDefaultAsync();
         }
 

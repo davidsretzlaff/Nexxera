@@ -12,10 +12,7 @@ namespace Nexxera.WEBAPI.Dto
 
         [Required (ErrorMessage="Cliente é Obrigatório")]
         public int CustomerId { get; set; }
-
         public CustomerDto Customer { get; set; }
 
-         public List<CreditCardDto> CreditCards { get; set; }
-         public List<DebtHistoryDto> DebtHistories { get; set; }
     }
 }

@@ -16,9 +16,6 @@ namespace Nexxera.WEBAPI.Dto
         public decimal BalanceAccountHistory { get; set; }
         [Required (ErrorMessage="Conta é Obrigatório")]
         public int AccountId { get; set; }
-
-        [Required (ErrorMessage="Periodo é Obrigatório")]
-        public int PeriodId {get;set;}
         public PeriodDto Period{get;set;}
     }
 }

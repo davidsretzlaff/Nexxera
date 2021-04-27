@@ -37,6 +37,12 @@ namespace Nexxera.WEBAPI
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddAutoMapper(typeof(Startup));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+
             services.AddCors();
             
         }

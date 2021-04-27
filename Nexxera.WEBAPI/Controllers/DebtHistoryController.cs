@@ -10,26 +10,26 @@ namespace Nexxera.WEBAPI.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    public class CreditCardController : ControllerBase
+    public class DebtHistoryController : ControllerBase
     {
         private readonly INexxeraRepository _repo;
 
         private readonly IMapper _mapper;
 
-        public CreditCardController(INexxeraRepository repo, IMapper mapper)
+        public DebtHistoryController(INexxeraRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
         }
-        
+
         [HttpGet("{customerId}")]
         [HttpGet("{customerId},{periodId}")]
         public async Task<IActionResult> Get(int customerId, int? periodId)
         {
             try{
-                CreditCard CreditCardModel = await _repo.GetCreditCard(customerId,periodId);
+                DebtHistory DebtHistoryModel = await _repo.GetDebtHistory(customerId, periodId);
                 // match date to dto
-                CreditCardDto result = _mapper.Map<CreditCardDto>(CreditCardModel);
+                DebtHistoryDto result = _mapper.Map<DebtHistoryDto>(DebtHistoryModel);
                 return Ok(result);
             }
             catch(System.Exception ex)

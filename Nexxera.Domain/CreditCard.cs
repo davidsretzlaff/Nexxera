@@ -8,7 +8,7 @@ namespace Nexxera.Domain
         public decimal CreditLimit { get; set; }
         public decimal  Balance { get; set; }
         public int AccountId { get; set; }
-        public Account Account { get; set; }
+        
         public List<CreditCardHistory> CreditCardHistories { get; set; }
         
     }
