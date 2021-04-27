@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +37,39 @@ namespace Nexxera.WEBAPI.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
             }   
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(DebtHistoryDto debtHistoryDto)
+        {
+            try{
+                
+                DebtHistory debtHistoryModel = _mapper.Map<DebtHistory>(debtHistoryDto);
+                if(debtHistoryModel != null)
+                {
+                    Account account = await _repo.GetAccount(null,debtHistoryModel.AccountId);
+                    if(account != null)
+                    {
+                        debtHistoryModel.BalanceAccountHistory = account.Balance;
+                    }
+                    else{
+                        return NotFound("Conta cliente não encontrada");
+                    }
+                }
+                debtHistoryModel.CreateDate = DateTime.Now;
+                _repo.Add(debtHistoryModel);
+
+                if(await _repo.SaveChangesAsync()){
+                    // mapper reverse                    
+                        return Created($"/api/debthistory/{debtHistoryDto.Id}",debtHistoryModel);
+                }
+            }
+            catch(System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
+            }            
+
+            return BadRequest();
         }
     }
 }

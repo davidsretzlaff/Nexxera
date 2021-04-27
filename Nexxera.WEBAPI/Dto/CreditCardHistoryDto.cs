@@ -14,7 +14,7 @@ namespace Nexxera.WEBAPI.Dto
         public int CreditCardId { get; set; }
 
         [Required (ErrorMessage="Periodo é Obrigatório")]        
-        
+        public int PeriodId {get;set;}
          public PeriodDto Period { get; set; }
 
     }

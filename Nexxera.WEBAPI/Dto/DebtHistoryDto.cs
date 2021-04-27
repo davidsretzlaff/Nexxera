@@ -14,8 +14,11 @@ namespace Nexxera.WEBAPI.Dto
         [Required (ErrorMessage="Valor é Obrigatório")]
         public decimal Value { get; set; }
         public decimal BalanceAccountHistory { get; set; }
+
         [Required (ErrorMessage="Conta é Obrigatório")]
         public int AccountId { get; set; }
+
+        public int PeriodId{get;set;}
         public PeriodDto Period{get;set;}
     }
 }

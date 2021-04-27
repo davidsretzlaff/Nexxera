@@ -38,5 +38,27 @@ namespace Nexxera.WEBAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
             }            
         }
+
+       [HttpPost]
+        public async Task<IActionResult> Post(CustomerDto customerDto)
+        {
+            try{
+                
+                Customer customerModel = _mapper.Map<Customer>(customerDto);
+                _repo.Add(customerModel);
+            
+                if(await _repo.SaveChangesAsync()){
+                    // mapper reverse
+                        return Created($"/api/customer/{customerDto.Id}",customerModel);
+                     
+                }
+            }
+            catch(System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
+            }            
+
+            return BadRequest();
+        }
     }
 }

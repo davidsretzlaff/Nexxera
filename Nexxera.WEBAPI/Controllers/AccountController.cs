@@ -22,11 +22,13 @@ namespace Nexxera.WEBAPI.Controllers
             _mapper = mapper;
         }
 
+        
+        [HttpGet("{customerId},{accountId}")]
         [HttpGet("{customerId}")]
-        public async Task<IActionResult> Get(int customerId)
+        public async Task<IActionResult> Get(int? customerId, int? accountId)
         {
             try{
-                Account AccountModel = await _repo.GetAccount(customerId);
+                Account AccountModel = await _repo.GetAccount(customerId,accountId);
                 // match date to dto
                 AccountDto result = _mapper.Map<AccountDto>(AccountModel);
                 return Ok(result);
