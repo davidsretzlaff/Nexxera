@@ -5,7 +5,7 @@
        </div>
        <div class='col-sm-4 text-right ' style= "padding-top:25px;">
         
-        <div ng-controller="ExampleController">
+        <!-- <div ng-controller="ExampleController">
             <form name="myForm">
               <label for="repeatSelect"> Selecione o Período </label>
               <select ng-change="switchLanguage()" ng-controller="langCtrl" type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  ng-model="data.model">
@@ -13,7 +13,7 @@
               </select>
             </form>
             <hr>            
-          </div>
+          </div> -->
           <!-- <button type="button" style="margin-top: 20px;" class="btn btn-primary" data-toggle="modal" ng-click="openMoldaCustomer()">Novo Cliente</button> -->
        </div>
 
@@ -21,10 +21,10 @@
 
        
        <hr>
-       <div class=' col-sm-offset-1 col-sm-9'>
-         <ul class="nav nav-tabs">
-           <li role="presentation" class="active"><a href="#home">Conta corrente</a></li>      
-           <li role="presentation"><a href="#contato">Extrato Cartão de Crédito</a></li>
+       <div class=' col-sm-offset-1 col-sm-9' ng-controller="extractDebtController">
+         <ul class="nav nav-tabs" >
+           <li role="presentation" class="active"><a href="#extractDebt/{{customerId}}">Conta corrente</a></li>      
+           <li role="presentation"><a href="#extractCredit/{{customerId}}">Extrato Cartão de Crédito</a></li>
          </ul>
 
           <table class="table table-bordered" >
@@ -34,16 +34,17 @@
                    <th class="text-center" style="border: 0px;">Descrição</th>
                    <th class="text-center" style="border: 0px;">Valor</th>
                    <th class="text-center" style="border: 0px;">Valor Disp.</th>
+                   <th class="text-center" style="border: 0px;">Período</th>
                 </tr>
              </thead>
              <tbody>
-                <tr ng-repeat="customer in customers">
-                   <td> <p class="help-block">{{customer.name}}</p></td>
-                   <td><p class="help-block">{{customer.cpf}}</p></td>
-                   <td style="width: 200px;" class="text-center">
-                      
-                      <button type="button"  class="btn btn-default"><a href="#extractDebt">Visualizar Conta</a></button>
-                   </td>
+                <tr ng-repeat="debt in debtHistorys">
+                   <td> <p class="help-block">{{debt.createDate}}</p></td>
+                   <td><p class="help-block">{{debt.description}}</p></td>
+                   <td><p class="help-block">{{debt.value}}</p></td>
+                   <td><p class="help-block">{{debt.balanceAccountHistory}}</p></td>
+                   <td><p class="help-block">{{debt.period.description}}</p></td>
+                   
                 </tr>
              </tbody>
           </table>

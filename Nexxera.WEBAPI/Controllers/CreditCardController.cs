@@ -22,12 +22,12 @@ namespace Nexxera.WEBAPI.Controllers
             _mapper = mapper;
         }
         
-        [HttpGet("{customerId}")]
-        [HttpGet("{customerId},{periodId}")]
-        public async Task<IActionResult> Get(int customerId, int? periodId)
+        [HttpGet("{accountId}")]
+        [HttpGet("{accountId},{periodId}")]
+        public async Task<IActionResult> Get(int accountId, int? periodId)
         {
             try{
-                CreditCard CreditCardModel = await _repo.GetCreditCard(customerId,periodId,true);
+                CreditCard CreditCardModel = await _repo.GetCreditCard(accountId,periodId,true);
                 // match date to dto
                 CreditCardDto result = _mapper.Map<CreditCardDto>(CreditCardModel);
                 return Ok(result);

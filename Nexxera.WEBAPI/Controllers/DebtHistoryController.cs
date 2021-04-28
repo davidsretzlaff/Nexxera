@@ -23,14 +23,14 @@ namespace Nexxera.WEBAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{customerId}")]
-        [HttpGet("{customerId},{periodId}")]
-        public async Task<IActionResult> Get(int customerId, int? periodId)
+        [HttpGet("{accountId}")]
+        [HttpGet("{accountId},{periodId}")]
+        public async Task<IActionResult> Get(int accountId, int? periodId)
         {
             try{
-                DebtHistory DebtHistoryModel = await _repo.GetDebtHistory(customerId, periodId);
+                DebtHistory[] DebtHistoryModel = await _repo.GetDebtHistory(accountId, periodId);
                 // match date to dto
-                DebtHistoryDto result = _mapper.Map<DebtHistoryDto>(DebtHistoryModel);
+                DebtHistoryDto[] result = _mapper.Map<DebtHistoryDto[]>(DebtHistoryModel);
                 return Ok(result);
             }
             catch(System.Exception ex)

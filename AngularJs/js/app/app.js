@@ -10,9 +10,9 @@ angular.module("app",['ngRoute'])
 		templateUrl:"view/extractdebt.html",
 		controller:"extractDebtController"
 	})
-	.when("/extractCredit",{
+	.when("/extractCredit/:customerId",{
 		templateUrl:"view/extractcredit.html",
-		controller:"extractcCreditController"
+		controller:"extractCreditController"
 	});
 
 	$routeProvider.otherwise({redirectTo:"/home"});

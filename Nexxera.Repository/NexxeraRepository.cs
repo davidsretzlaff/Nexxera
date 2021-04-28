@@ -41,7 +41,7 @@ namespace Nexxera.Repository
                         .OrderBy(c => c.Id);
                         
             if(customerId.HasValue)                        
-                query = query.Where(c => c.Id == customerId);
+                query = query.Where(c => c.CustomerId == customerId);
             else if(accountId.HasValue)    
                 query = query.Where(c => c.Id == accountId);
 
@@ -84,7 +84,7 @@ namespace Nexxera.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<DebtHistory> GetDebtHistory(int accountId, int? periodId)
+        public async Task<DebtHistory[]> GetDebtHistory(int accountId, int? periodId)
         {
             IQueryable<DebtHistory> query = _context.DebtHistories;            
 
@@ -92,11 +92,12 @@ namespace Nexxera.Repository
                         .AsNoTracking()
                         .OrderBy(c => c.Id)
                         .Where(c => c.AccountId == accountId);
+
             if(periodId.HasValue)
             {
                 query =query.Where(c => c.PeriodId == periodId );
             }
-            return await query.FirstOrDefaultAsync();
+            return await query.ToArrayAsync();
         }
 
         public void Update<T>(T entity) where T : class
