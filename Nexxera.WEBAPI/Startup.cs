@@ -15,6 +15,7 @@ using Microsoft.Extensions.Logging;
 using Nexxera.Repository;
 using Nexxera.WEBAPI.Helper;
 
+
 namespace Nexxera.WEBAPI
 {
     public class Startup
@@ -42,6 +43,7 @@ namespace Nexxera.WEBAPI
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            services.AddSwaggerGen();
 
             services.AddCors();
             
@@ -50,6 +52,11 @@ namespace Nexxera.WEBAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","Documentação API v1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
