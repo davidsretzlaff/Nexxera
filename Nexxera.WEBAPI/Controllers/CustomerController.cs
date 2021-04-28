@@ -42,8 +42,7 @@ namespace Nexxera.WEBAPI.Controllers
        [HttpPost]
         public async Task<IActionResult> Post(CustomerDto customerDto)
         {
-            try{
-                
+            try{                
                 Customer customerModel = _mapper.Map<Customer>(customerDto);
                 _repo.Add(customerModel);
             

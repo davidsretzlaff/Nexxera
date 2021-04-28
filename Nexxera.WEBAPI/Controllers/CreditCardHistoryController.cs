@@ -23,25 +23,23 @@ namespace Nexxera.WEBAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(CreditCardHistoryDto creditCardHistoryDto)
+        [HttpPost("BuyWithCreditCard")]
+        public async Task<IActionResult> BuyWithCreditCard(CreditCardHistoryDto creditCardHistoryDto)
         {
-            try{
-                
+            try{                
                 CreditCardHistory creditCardHistoryModel = _mapper.Map<CreditCardHistory>(creditCardHistoryDto);
                 if(creditCardHistoryModel != null)
                 {
-                    CreditCard creditCard = await _repo.GetCreditCard(creditCardHistoryModel.CreditCardId,null);
+                    CreditCard creditCard = await _repo.GetCreditCard(creditCardHistoryModel.CreditCardId,null,false);
                     if(creditCard != null)
                     {
                         creditCardHistoryModel.BalanceCreditCardHistory = creditCard.Balance;
-                        if(creditCard.Balance < creditCardHistoryModel.Value)
+                        if((creditCard.CreditLimit - creditCard.Balance ) < creditCardHistoryModel.Value)
                         {
                             return BadRequest("Não autorizado. Limite Disponível  R$" + creditCard.Balance);
                         }                        
-                        creditCard.Balance -= creditCardHistoryModel.Value; 
-                        _repo.Update(creditCard);
-                        await _repo.SaveChangesAsync();                
+                        creditCard.Balance += creditCardHistoryModel.Value; 
+                        _repo.Update(creditCard);                        
                     }
                     else{
                         return NotFound("Cartão do cliente não encontrado");
@@ -63,5 +61,7 @@ namespace Nexxera.WEBAPI.Controllers
 
             return BadRequest();
         }
+
+        
     }
 }

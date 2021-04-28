@@ -1,0 +1,100 @@
+<main class="container" >
+   <hr>
+      <div class='col-sm-offset-1 col-sm-7 text-left' style="border:1px">
+        <h3>Clientes <span class="label label-default"></span></h3>
+      </div>
+      <div class='col-sm-4'>
+         <button type="button" style="margin-top: 20px;" class="btn btn-primary" data-toggle="modal" ng-click="openMoldaCustomer()">Novo Cliente</button>
+      </div>
+      
+      <div class=' col-sm-offset-1 col-sm-9'>
+         <hr>
+         <table class="table table-bordered" >
+            <thead>
+               <tr>
+                  <th class="text-center" style="border: 0px;">Nome</th>
+                  <th class="text-center" style="border: 0px;">Cpf</th>
+                  <th class="text-center" style="border: 0px;">Ações</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr ng-repeat="customer in customers">
+                  <td> <p class="help-block">{{customer.name}}</p></td>
+                  <td><p class="help-block">{{customer.cpf}}</p></td>
+                  <td style="width: 200px;" class="text-center">
+                     
+                     <button type="button"  class="btn btn-default"><a href="#extractDebt/{{customer.id}}">Visualizar Conta</a></button>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+
+</main>
+
+  
+  <!-- MODAL CLIENTE -->
+  <div ng-app="app" ng-controller="postserviceCtrl" class=" modal fade" id="modalCustomer" role="dialog">
+    <div class="modal-dialog">
+       <div class="modal-content">
+          <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal">&times;</button>
+             <h4 class="modal-title">Novo Cliente</h4>
+          </div>
+          <div class="modal-body">
+             <!-- FORM ============ -->
+             <form class="form-horizontal" role="form" name="userForm" ng-submit="submitForm(user.cpf,user.name)"
+                novalidate>
+                <!-- NAME -->
+                <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
+                   <label class="control-label col-sm-2">Name</label>
+                   <div class="col-sm-10">
+                      <input
+                         type="text" 
+                         name="name" 
+                         ng-model="user.name" 
+                         class="form-control"                       
+                         required>
+                      <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Nome é obrigatório</p>
+                   </div>
+                </div>
+                <!-- cpf -->
+                <div class="form-group"
+                   ng-class="{ 'has-error' : userForm.cpf.$invalid && !userForm.cpf.$pristine }">
+                   <label class="control-label col-sm-2">Cpf</label>
+                   <div class="col-sm-10">
+                      <input  
+                      type=number
+                      name="cpf" 
+                      ng-model="user.cpf" 
+                      class="form-control" 
+                      ng-minlength="11"
+                      ng-maxlength="11"                        
+                      required                      
+                      >
+                      <p ng-show="userForm.cpf.$error.minlength" class="help-block">Cpf precisa ter 11 digitos</p>
+                      <p ng-show="userForm.cpf.$error.maxlength" class="help-block">Cpf precisa ter 11 digitos</p>
+                   </div>
+                </div>
+                <div class="form-group">
+                   <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary" ng-submit="submitForm(user.cpf,user.name)" ng-disabled="userForm.$invalid">Submit</button>
+                   </div>
+                </div>
+                <div ng-show="showErro" class="form-group">
+                   <div class="col-sm-offset-2 col-sm-10">
+                      <p  class="help-block">Erro ao utilizar WEBAPI{{messageErro}}</p>
+                   </div>
+                </div>
+             </form>
+          </div>
+          <div class="modal-footer">
+             <button type="button" class="btn btn-default"  data-dismiss="modal">Fechar</button>
+          </div>
+       </div>
+    </div>
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+       <div class="container">
+          <p class="navbar-text navbar-right"> <a href="https://www.linkedin.com/in/david-retzlaff-b4833490/" class="navbar-link">David Retzlaff</a></p>
+       </div>
+    </nav>

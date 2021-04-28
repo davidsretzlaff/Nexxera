@@ -29,7 +29,7 @@ namespace Nexxera.Repository
             return (await _context.SaveChangesAsync()) > 0;
         }
 
-        public async Task<Account> GetAccount(int customerId)
+        public async Task<Account> GetAccount(int? customerId, int? accountId)
         {
             IQueryable<Account> query = _context.Accounts
             .Include(e => e.Customer)
@@ -38,8 +38,13 @@ namespace Nexxera.Repository
 
             query = query
                         .AsNoTracking()
-                        .OrderBy(c => c.Id)
-                        .Where(c => c.Id == customerId);
+                        .OrderBy(c => c.Id);
+                        
+            if(customerId.HasValue)                        
+                query = query.Where(c => c.Id == customerId);
+            else if(accountId.HasValue)    
+                query = query.Where(c => c.Id == accountId);
+
             return await query.FirstOrDefaultAsync();
         }
 
@@ -55,11 +60,16 @@ namespace Nexxera.Repository
             return await query.ToArrayAsync();
         }
 
-        public async Task<CreditCard> GetCreditCard(int accountId, int? periodId)
+        public async Task<CreditCard> GetCreditCard(int accountId, int? periodId, bool? includeDetail)
         {
-            IQueryable<CreditCard> query = _context.CreditCards
-            .Include(e => e.CreditCardHistories)
-            .ThenInclude(x => x.Period);
+            IQueryable<CreditCard> query = _context.CreditCards;
+
+            if(includeDetail.HasValue && includeDetail.Value)
+            {
+                query = query.Include(e => e.CreditCardHistories)
+                             .ThenInclude(x => x.Period);
+            }
+            
             
 
             query = query
@@ -93,6 +103,5 @@ namespace Nexxera.Repository
         {
            _context.Update(entity);
         }
-
     }
 }

@@ -13,9 +13,8 @@ namespace Nexxera.Repository
         // Customer Event
         Task<Customer[]> GetAllCustomer();
         // Account
-        Task<Account> GetAccount(int customerId);
-
-        Task<CreditCard> GetCreditCard(int accountId,int? periodId);
+        Task<Account> GetAccount(int? customerId, int? accountId);
+        Task<CreditCard> GetCreditCard(int accountId,int? periodId,bool? includeDetail);
 
         Task<DebtHistory> GetDebtHistory(int accountId,int? periodId);
 
