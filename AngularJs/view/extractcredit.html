@@ -34,14 +34,14 @@
                    <th class="text-center" style="border: 0px;">Descrição</th>
                    <th class="text-center" style="border: 0px;">Valor</th>
                    <th class="text-center" style="border: 0px;">Histórico Crédito Disp.</th>
-                   <th class="text-center" style="border: 0px;">Período  {{data.model}}</th>
+                   <th class="text-center" style="border: 0px;">Período </th>
                 </tr>
              </thead>
              <tbody>
               
                 <tr ng-repeat="credit in creditCard.creditCardHistories" ng-if="credit.periodId == data.model ">
                    <td> <p class="help-block">{{credit.createDate}}</p></td>
-                   <td><p class="help-block"></p></td>
+                   <td><p class="help-block">{{credit.description}}</p></td>
                    <td><p class="help-block">{{credit.value}}</p></td>
                    <td><p class="help-block">{{creditCard.creditLimit - credit.value}}</p></td>
                    <td><p class="help-block">{{credit.period.description}}</p></td>

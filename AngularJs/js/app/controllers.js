@@ -49,7 +49,14 @@ angular
       $scope.titulo = "Extrato conta";
       $scope.customerId = $routeParams.customerId;
       $scope.debtHistorys = null;
-      $scope.$evalAsync();
+	  $scope.$evalAsync();
+	  
+	  
+      $http
+        .get("http://localhost:5000/api/customer/" + $scope.customerId)
+        .then(function (response) {
+          $scope.customer = response.data;
+        });
 
       $scope.submitFormPaymentDebt = function (description, value, periodId) {
         if ($scope.modelForm.$valid) {
@@ -79,26 +86,7 @@ angular
               .then(
                 function (response) {
                   this.modelForm.reset();
-                  $("#modalNewPaymentDebt").modal("hide");
-
-                  scope.safeApply(function () {
-                    $http
-                      .get(
-                        "http://localhost:5000/api/account/" + $scope.customerId
-                      )
-                      .then(function (response) {
-                        $scope.account = response.data;
-                        $http
-                          .get(
-                            "http://localhost:5000/api/DebtHistory/" +
-                              response.data.id
-                          )
-                          .then(function (response) {
-                            $scope.debtHistorys = [];
-                            $scope.debtHistorys = response.data;
-                          });
-                      });
-                  });
+                  $("#modalNewPaymentDebt").modal("hide");                  
                 },
                 function (response) {
                   // optional
@@ -128,7 +116,7 @@ angular
                   availableOptions: response.data,
                 };
               });
-          });
+		  });		  
       });
       $scope.openMoldaPaymentDebt = function () {
         $("#modalNewPaymentDebt").modal("show");
