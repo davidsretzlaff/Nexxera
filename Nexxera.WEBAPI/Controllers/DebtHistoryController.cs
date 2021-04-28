@@ -51,6 +51,10 @@ namespace Nexxera.WEBAPI.Controllers
                     if(account != null)
                     {
                         debtHistoryModel.BalanceAccountHistory = account.Balance;
+                         if(account.Balance < debtHistoryModel.Value)
+                         {
+                              return BadRequest("Não autorizado. Limite Disponível  R$" + account.Balance);
+                         }
                          account.Balance -=  debtHistoryModel.Value;
                         _repo.Update(account);
                     }

@@ -38,6 +38,22 @@ namespace Nexxera.WEBAPI.Controllers
             }   
         }
 
+
+        [HttpGet("GetCardById/{creditCardId}")]
+        public async Task<IActionResult> Get(int creditCardId)
+        {
+            try{
+                CreditCard CreditCardModel = await _repo.GetCreditCardById(creditCardId);
+                // match date to dto
+                CreditCardDto result = _mapper.Map<CreditCardDto>(CreditCardModel);
+                return Ok(result);
+            }
+            catch(System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
+            }   
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post(CreditCardDto creditCardDto)
         {

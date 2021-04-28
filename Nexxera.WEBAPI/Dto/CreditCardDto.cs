@@ -14,7 +14,7 @@ namespace Nexxera.WEBAPI.Dto
         public decimal  Balance { get; set; }
         
         [Required (ErrorMessage="Conta é Obrigatório")]
-        public int AccountId { get; set; }
+        
         public List<CreditCardHistoryDto> CreditCardHistories { get; set; }
  
     }

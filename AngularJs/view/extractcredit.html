@@ -3,48 +3,47 @@
        <div class='col-sm-offset-1 col-sm-5 text-left' style="border:1px">
          <h3>Extratos <span class="label label-default"></span></h3>
        </div>
-      
-        
+       <div class='col-sm-4'>
+         <button type="button" style="margin-top: 20px;" class="btn btn-primary" data-toggle="modal" ng-click="openMoldaPaymentCredit()">Pagamento Crédito</button>
+      </div>
+       <hr>   
          <div ng-controller="extractDebtController"> 
-       
-            <hr>   
-            <div >
-               <form name="myForm">
+            <div>
+               <form name="myForm float-right">
                  <label for="repeatSelect"> Selecione o Período </label>
                  <select ng-change="switchLanguage()"  type="button" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  ng-model="data.model">
                    <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.description}}</option>
                  </select>
                </form>
           </div>
-         
-          <!-- <button type="button" style="margin-top: 20px;" class="btn btn-primary" data-toggle="modal" ng-click="openMoldaCustomer()">Novo Cliente</button> -->
-            
        <hr>
-       <div class=' col-sm-offset-1 col-sm-9'>
+       <div class=' col-sm-offset-1 col-sm-9' >
+         <hr>   
+         <p class="help-block">Cliente: {{customer.name}}</p>
+         <p class="help-block">limite cartão: R${{creditCard.creditLimit}}</p>
+         <p class="help-block">limite cartão disponível: R${{creditCard.creditLimit - creditCard.balance}}</p>
+         <p class="help-block">Valor atual fatura: R${{creditCard.balance}}</p>
          <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="#extractDebt/{{customerId}}">Conta corrente</a></li>      
             <li role="presentation"><a href="#extractCredit/{{customerId}}">Extrato Cartão de Crédito</a></li>
          </ul>
-         limite cartão: R${{creditCard.creditLimit}}
-         Valor atual fatura: R${{creditCard.balance}}
-         
           <table class="table table-bordered"  >
              <thead>
                 <tr>
                    <th class="text-center" style="border: 0px;">Data</th>
                    <th class="text-center" style="border: 0px;">Descrição</th>
                    <th class="text-center" style="border: 0px;">Valor</th>
-                   <th class="text-center" style="border: 0px;">Valor Disp.</th>
+                   <th class="text-center" style="border: 0px;">Histórico Crédito Disp.</th>
                    <th class="text-center" style="border: 0px;">Período  {{data.model}}</th>
                 </tr>
              </thead>
              <tbody>
               
-                <tr ng-repeat="credit in creditCard.creditCardHistories" ng-if="credit.periodId == data.model">
+                <tr ng-repeat="credit in creditCard.creditCardHistories" ng-if="credit.periodId == data.model ">
                    <td> <p class="help-block">{{credit.createDate}}</p></td>
                    <td><p class="help-block"></p></td>
                    <td><p class="help-block">{{credit.value}}</p></td>
-                   <td><p class="help-block">{{credit.balanceCreditCardHistory}}</p></td>
+                   <td><p class="help-block">{{creditCard.creditLimit - credit.value}}</p></td>
                    <td><p class="help-block">{{credit.period.description}}</p></td>
        
                 </tr>
@@ -54,67 +53,71 @@
       </div>
  </main>
 </div>
+   <!-- MODAL INSERIR PAGAMENTO DEBITO -->
+      
+   <div ng-app="app" ng-controller="extractCreditController" class=" modal fade" id="modalNewPaymentCredit" role="dialog">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">&times;</button>
+               <h4 class="modal-title">Pagamento crédito</h4>
+            </div>
+            <div class="modal-body">
+               <!-- FORM ============ -->
+               <form class="form-horizontal" role="form" name="modelForm" ng-submit="submitFormPaymentCredit(model.description,model.value,model.periodId)"
+                  novalidate>
+                  <!-- DESCRIÇÃO -->
+                  <div class="form-group" ng-class="{ 'has-error' : modelForm.description.$invalid && !modelForm.description.$pristine }">
+                     <label class="control-label col-sm-2">Descrição</label>
+                     <div class="col-sm-10">
+                        <input
+                           type="text" 
+                           name="description" 
+                           ng-model="model.description" 
+                           class="form-control"                       
+                           required>
+                        <p ng-show="modelForm.description.$invalid && !modelForm.description.$pristine" class="help-block">Descrição é obrigatório</p>
+                     </div>
+                  </div>
+                  <!-- VALOR -->
+                  <div class="form-group"
+                     ng-class="{ 'has-error' : modelForm.value.$invalid && !modelForm.value.$pristine }">
+                     <label class="control-label col-sm-2">Valor</label>
+                     <div class="col-sm-10">
+                        <input  
+                        type=number
+                        name="value" 
+                        ng-model="model.value" 
+                        class="form-control"                   
+                        required                      
+                        >                    
+                     </div>
+                  </div>
    
-   <!-- MODAL CLIENTE -->
-   <div ng-app="app" ng-controller="postserviceCtrl" class=" modal fade" id="modalCustomer" role="dialog">
-     <div class="modal-dialog">
-        <div class="modal-content">
-           <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">Novo Cliente</h4>
-           </div>
-           <div class="modal-body">
-              <!-- FORM ============ -->
-              <form class="form-horizontal" role="form" name="userForm" ng-submit="submitForm(user.cpf,user.name)"
-                 novalidate>
-                 <!-- NAME -->
-                 <div class="form-group" ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }">
-                    <label class="control-label col-sm-2">Name</label>
-                    <div class="col-sm-10">
-                       <input
-                          type="text" 
-                          name="name" 
-                          ng-model="user.name" 
-                          class="form-control"                       
-                          required>
-                       <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">Nome é obrigatório</p>
-                    </div>
+                  <div class="form-group">
+                        <label class="control-label col-sm-2">Período</label>
+                         <select  type="button" style="margin-left:5px;" class="btn btn-default dropdown-toggle"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required  ng-model="model.periodId">
+                         <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.description}}</option>
+                         </select>                    
                  </div>
-                 <!-- cpf -->
-                 <div class="form-group"
-                    ng-class="{ 'has-error' : userForm.cpf.$invalid && !userForm.cpf.$pristine }">
-                    <label class="control-label col-sm-2">Cpf</label>
-                    <div class="col-sm-10">
-                       <input  
-                       type=number
-                       name="cpf" 
-                       ng-model="user.cpf" 
-                       class="form-control" 
-                       ng-minlength="11"
-                       ng-maxlength="11"                        
-                       required                      
-                       >
-                       <p ng-show="userForm.cpf.$error.minlength" class="help-block">Cpf precisa ter 11 digitos</p>
-                       <p ng-show="userForm.cpf.$error.maxlength" class="help-block">Cpf precisa ter 11 digitos</p>
-                    </div>
-                 </div>
-                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                       <button type="submit" class="btn btn-primary" ng-submit="submitForm(user.cpf,user.name)" ng-disabled="userForm.$invalid">Submit</button>
-                    </div>
-                 </div>
-                 <div ng-show="showErro" class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                       <p  class="help-block">Erro ao utilizar WEBAPI{{messageErro}}</p>
-                    </div>
-                 </div>
-              </form>
-           </div>
-           <div class="modal-footer">
-              <button type="button" class="btn btn-default"  data-dismiss="modal">Fechar</button>
-           </div>
-        </div>
-     </div>
+   
+                  <div class="form-group">
+                     <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary" ng-submit="submitFormPaymentCredit(model.description,model.value,model.periodId)" ng-disabled="modelForm.$invalid">Submit</button>
+                     </div>
+                  </div>
+                  <div ng-show="showErro" class="form-group">
+                     <div class="col-sm-offset-2 col-sm-10">
+                        <p  class="help-block">Erro : {{messageErro}}</p>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-default"  data-dismiss="modal">Fechar</button>
+            </div>
+         </div>
+      </div>
      <nav class="navbar navbar-default navbar-fixed-bottom">
         <div class="container">
            <p class="navbar-text navbar-right"> <a href="https://www.linkedin.com/in/david-retzlaff-b4833490/" class="navbar-link">David Retzlaff</a></p>

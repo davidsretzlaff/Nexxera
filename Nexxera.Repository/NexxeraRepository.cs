@@ -53,6 +53,14 @@ namespace Nexxera.Repository
             IQueryable<Customer> query = _context.Customers;
             return await query.ToArrayAsync();
         }
+        public async Task<Customer> GetCustomer(int customerId)
+        {
+            IQueryable<Customer> query = _context.Customers;
+             query =query.AsNoTracking()
+                        .OrderBy(c => c.Id)
+                        .Where(c => c.Id == customerId);
+            return await query.FirstOrDefaultAsync();
+        }
 
         public async Task<Period[]> GetAllPeriod()
         {
@@ -69,8 +77,6 @@ namespace Nexxera.Repository
                 query = query.Include(e => e.CreditCardHistories)
                              .ThenInclude(x => x.Period);
             }
-            
-            
 
             query = query
                         .AsNoTracking()
@@ -81,6 +87,19 @@ namespace Nexxera.Repository
                     // query = query.Where(x => x.CreditCardHistories.Any(subitem => subitem.PeriodId == periodId));
             }
             
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<CreditCard> GetCreditCardById(int id)
+        {
+            IQueryable<CreditCard> query = _context.CreditCards;
+
+            query = query
+                        .AsNoTracking()
+                        .OrderBy(c => c.Id)
+                        .Where(c => c.Id == id);
+         
             return await query.FirstOrDefaultAsync();
         }
 

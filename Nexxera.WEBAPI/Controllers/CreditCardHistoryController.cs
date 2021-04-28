@@ -24,19 +24,20 @@ namespace Nexxera.WEBAPI.Controllers
         }
 
         [HttpPost("BuyWithCreditCard")]
-        public async Task<IActionResult> BuyWithCreditCard(CreditCardHistoryDto creditCardHistoryDto)
+        public async Task<IActionResult> Post(CreditCardHistoryDto creditCardHistoryDto)
         {
             try{                
                 CreditCardHistory creditCardHistoryModel = _mapper.Map<CreditCardHistory>(creditCardHistoryDto);
                 if(creditCardHistoryModel != null)
                 {
-                    CreditCard creditCard = await _repo.GetCreditCard(creditCardHistoryModel.CreditCardId,null,false);
+
+                    CreditCard creditCard = await _repo.GetCreditCardById(creditCardHistoryDto.CreditCardId);
                     if(creditCard != null)
                     {
                         creditCardHistoryModel.BalanceCreditCardHistory = creditCard.Balance;
                         if((creditCard.CreditLimit - creditCard.Balance ) < creditCardHistoryModel.Value)
                         {
-                            return BadRequest("Não autorizado. Limite Disponível  R$" + creditCard.Balance);
+                            return BadRequest("Não autorizado. Limite Disponível  R$"+(creditCard.CreditLimit - creditCard.Balance));
                         }                        
                         creditCard.Balance += creditCardHistoryModel.Value; 
                         _repo.Update(creditCard);                        

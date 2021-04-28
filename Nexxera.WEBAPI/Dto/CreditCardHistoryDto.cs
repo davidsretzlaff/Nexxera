@@ -9,6 +9,8 @@ namespace Nexxera.WEBAPI.Dto
         public int Id { get; set; }        
         public DateTime CreateDate { get; set; }        
         [Required (ErrorMessage="Valor é Obrigatório")]
+
+        public string description{get;set;}
         public decimal Value { get; set; }        
         public decimal BalanceCreditCardHistory { get; set; }
         public int CreditCardId { get; set; }

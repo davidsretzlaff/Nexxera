@@ -38,8 +38,7 @@ namespace Nexxera.WEBAPI.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
             }            
         }
-
-       [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Post(CustomerDto customerDto)
         {
             try{                
@@ -58,6 +57,41 @@ namespace Nexxera.WEBAPI.Controllers
             }            
 
             return BadRequest();
+        }
+       [HttpDelete("{customerId}")]
+        public async Task<IActionResult> Delete(int customerId)
+        {
+            try{                
+                 Customer customerModel = await _repo.GetCustomer(customerId);
+                if(customerModel == null) return NotFound();
+                _repo.Delete(customerModel);
+            
+                if(await _repo.SaveChangesAsync()){
+                    return Ok();
+                }
+            }
+            catch(System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
+            }            
+
+            return BadRequest();
+        }
+
+        [HttpGet("{customerId}")]
+        public async Task<IActionResult> Get(int customerId)
+        {
+           
+             try{
+                Customer CustomerModel = await _repo.GetCustomer(customerId);
+                // match date to dto
+                CustomerDto result = _mapper.Map<CustomerDto>(CustomerModel);
+                return Ok(result);
+            }
+            catch(System.Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError,$"Banco dados falhou {ex.Message}");
+            }          
         }
     }
 }
