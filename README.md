@@ -19,6 +19,24 @@ transações do período.
 - Deve ser disponibilizada API REST para utilizar o sistema
 - Deve ser implementado um front para exibir o extrato da conta
 
+## Informaçõess sobre funcionalidades
+- Novo cliente
+- Lista clientes
+- Detalhe da conta 
+    há duas tab no detalhe da conta, uma simúlando a conta corrente e a outra símulando o extrato do cartão de crédito
+
+Tab extrato conta corrente
+     histórico
+     valor em conta corrente
+     simular a transição de uma compra no débito.
+     filtro por período
+
+tab extrato cartão de crédito
+    histórico
+    valor do limite do cartão de crédito
+    valor atual da fatura
+    simular transição de uma compra feita no cartão de crédito
+    filtro por período
 
 
 ## Informações Técnicas
