@@ -40,21 +40,17 @@ tab extrato cartão de crédito
 
 ## Informações Técnicas
 Projeto foi estruturado em 4 camadas separadas
-- Domains
-- Repository
-- WebApi
-- AngularJs
 
-Domains
+- **Domains**
 Camada responsavel pelos objetos da classe.
 
-Repository
+- **Repository**
 Camada responsavel pelas Interface.
 
-WebApi
+- **WebApi**
 Camada do serviço Rest API.
 
-AngularJS
+- **AngularJS**
 Front-End do projeto.
 
 ## tecnologias utilizadas
@@ -66,9 +62,11 @@ Tecnologias necessárias que seja instalada no computador
 - nodejs = https://nodejs.org/en/
 
 Como rodar projeto:
-1) Em webapi executar comando : dotnet run  
-2) Em angularjs executar comando :  http-server -a localhost -p 8000
-3) Abrir navegador http://localhost:8000
+1) Em webapi executar comando : **dotnet run**
+2) Em angularjs executar comando :  **http-server -a localhost -p 8000**
+3) Abrir navegador **http://localhost:8000**
+
 
 ## Documentação API
+
 Acessar documentação api swagger: https://localhost:5001/swagger/index.html
