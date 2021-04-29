@@ -57,7 +57,7 @@ Front-End do projeto.
 - .Net Core 3.1.114
 - AngularJS
 
-Tecnologias necessárias que seja instalada no computador
+Tecnologias necessárias instaladas no computador
 - dotnet = https://dotnet.microsoft.com/download
 - nodejs = https://nodejs.org/en/
 
