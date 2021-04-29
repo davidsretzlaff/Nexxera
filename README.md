@@ -20,23 +20,22 @@ transações do período.
 - Deve ser implementado um front para exibir o extrato da conta
 
 ## Informaçõess sobre funcionalidades
-- Novo cliente
-- Lista clientes
-- Detalhe da conta 
-    há duas tab no detalhe da conta, uma simúlando a conta corrente e a outra símulando o extrato do cartão de crédito
 
 Tab extrato conta corrente
-     histórico
-     valor em conta corrente
-     simular a transição de uma compra no débito.
-     filtro por período
+- histórico
+- valor em conta corrente
+- simular a transição de uma compra no débito.
+- filtro por período
 
 tab extrato cartão de crédito
-    histórico
-    valor do limite do cartão de crédito
-    valor atual da fatura
-    simular transição de uma compra feita no cartão de crédito
-    filtro por período
+- histórico
+- valor do limite do cartão de crédito
+- valor atual da fatura
+- simular transição de uma compra feita no cartão de crédito
+- filtro por período
+
+- Novo cliente
+- Lista clientes
 
 
 ## Informações Técnicas
@@ -59,17 +58,17 @@ AngularJS
 Front-End do projeto.
 
 ## tecnologias utilizadas
-.Net Core 3.1.114
-AngularJS
+- .Net Core 3.1.114
+- AngularJS
 
 Tecnologias necessárias que seja instalada no computador
-dotnet = https://dotnet.microsoft.com/download
-nodejs = https://nodejs.org/en/
+- dotnet = https://dotnet.microsoft.com/download
+- nodejs = https://nodejs.org/en/
 
 Como rodar projeto:
 1) Em webapi executar comando : dotnet run  
 2) Em angularjs executar comando :  http-server -a localhost -p 8000
 3) Abrir navegador http://localhost:8000
 
-
+## Documentação API
 Acessar documentação api swagger: https://localhost:5001/swagger/index.html
