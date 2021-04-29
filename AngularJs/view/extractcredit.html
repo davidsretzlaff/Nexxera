@@ -39,7 +39,7 @@
              </thead>
              <tbody>
               
-                <tr ng-repeat="credit in creditCard.creditCardHistories" ng-if="credit.periodId == data.model ">
+                <tr ng-repeat="credit in creditCard.creditCardHistories" ng-if="!data.model || credit.periodId == data.model ">
                    <td> <p class="help-block">{{credit.createDate}}</p></td>
                    <td><p class="help-block">{{credit.description}}</p></td>
                    <td><p class="help-block">{{credit.value}}</p></td>

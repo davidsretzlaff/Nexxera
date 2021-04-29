@@ -36,8 +36,8 @@
                 </tr>
              </thead>
              <tbody>
-                <tr ng-repeat="debt in debtHistorys" ng-if="debt.periodId == data.model ">
-                   <td> <p class="help-block">{{debt.createDate}}</p></td>
+                <tr ng-repeat="debt in debtHistorys" ng-if="!data.model || debt.periodId == data.model ">
+                   <td> <p class="help-block">{{debt.createDate}} </p></td>
                    <td><p class="help-block">{{debt.description}}</p></td>
                    <td><p class="help-block">{{debt.value}}</p></td>
                    <td><p class="help-block">{{debt.balanceAccountHistory}}</p></td>

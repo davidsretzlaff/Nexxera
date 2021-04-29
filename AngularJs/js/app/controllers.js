@@ -1,10 +1,29 @@
 angular
     .module("app")
-    .controller("indexController", function($scope, $http) {
+    .factory("sharedService", function($rootScope){
+
+        var mySharedService = {};
+
+        mySharedService.values = {};
+
+        mySharedService.customerWasUpdated = function(){
+            $rootScope.$broadcast('update');
+        }
+
+        return mySharedService;
+    })
+    .controller("indexController", function($scope, $http, sharedService) {
         $scope.title = "Home";
 
-        $http.get("http://localhost:5000/api/Customer/").then(function(response) {
-            $scope.customers = response.data;
+        var loadCustomersData = function(){
+            $http.get("http://localhost:5000/api/Customer/").then(function(response) {
+                $scope.customers = response.data;
+            });
+        };
+        loadCustomersData(); //first load
+
+        $scope.$on('update', function () {
+            loadCustomersData(); // load after update of any person
         });
 
         $scope.openMoldaCustomer = function() {
@@ -12,7 +31,7 @@ angular
         };
     })
 
-    .controller("postserviceCtrl", function($scope, $http, $routeParams) {
+    .controller("postserviceCtrl", function($scope, $http, $routeParams, sharedService) {
 
         // function to submit the form after all validation has occurred
         $scope.submitForm = function(cpf, name) {
@@ -37,6 +56,7 @@ angular
                         function(response) {
                             this.userForm.reset();
                             $("#modalCustomer").modal("hide");
+                            sharedService.customerWasUpdated();
                         },
                         function(response) {
                             // optional
@@ -50,12 +70,38 @@ angular
 
     .controller(
         "extractDebtController",
-        function($scope, $http, $routeParams, $location, $route) {
+        function($scope, $http, $routeParams, $location, $route,sharedService) {
             $scope.titulo = "Extrato conta";
             $scope.customerId = $routeParams.customerId;
             $scope.debtHistorys = null;
-            $scope.$evalAsync();
 
+            var loadExtractDebtData = function(){    
+                console.log( $scope.customerId);
+                    $http
+                    .get("http://localhost:5000/api/account/" + $scope.customerId)
+                        .then(function(response) {
+                            $scope.account = response.data;
+                            $http
+                                .get("http://localhost:5000/api/DebtHistory/" + response.data.id)
+                                .then(function(response) {
+                                    $scope.debtHistorys = [];
+                                    $scope.debtHistorys = response.data;
+                                });
+                            $http
+                                .get("http://localhost:5000/api/period/")
+                                .then(function(response) {
+                                    $scope.data = {
+                                        model: null,
+                                        availableOptions: response.data,
+                                    };
+                                });
+                        });
+            };
+            loadExtractDebtData(); //first load
+
+            $scope.$on('update', function () {
+                loadExtractDebtData(); // load after update of any person
+            });
 
             $http
                 .get("http://localhost:5000/api/customer/" + $scope.customerId)
@@ -95,6 +141,7 @@ angular
                                 function(response) {
                                     this.modelForm.reset();
                                     $("#modalNewPaymentDebt").modal("hide");
+                                    sharedService.customerWasUpdated();
                                 },
                                 function(response) {
                                     // optional
@@ -105,27 +152,7 @@ angular
                     });
             };
 
-            $scope.$evalAsync(function() {
-                $http
-                    .get("http://localhost:5000/api/account/" + $scope.customerId)
-                    .then(function(response) {
-                        $scope.account = response.data;
-                        $http
-                            .get("http://localhost:5000/api/DebtHistory/" + response.data.id)
-                            .then(function(response) {
-                                $scope.debtHistorys = [];
-                                $scope.debtHistorys = response.data;
-                            });
-                        $http
-                            .get("http://localhost:5000/api/period/")
-                            .then(function(response) {
-                                $scope.data = {
-                                    model: null,
-                                    availableOptions: response.data,
-                                };
-                            });
-                    });
-            });
+            
             $scope.openMoldaPaymentDebt = function() {
                 $("#modalNewPaymentDebt").modal("show");
             };
@@ -134,9 +161,28 @@ angular
 
     .controller(
         "extractCreditController",
-        function($scope, $http, $routeParams) {
+        function($scope, $http, $routeParams,sharedService) {
             $scope.titulo = "Extrato Cartão de crédito";
             $scope.customerId = $routeParams.customerId;
+
+            var loadextractCreditData = function(){    
+                console.log( $scope.customerId);
+                $http
+                .get("http://localhost:5000/api/account/" + $scope.customerId)
+                .then(function(response) {
+                    $http
+                        .get("http://localhost:5000/api/creditCard/" + response.data.id)
+                        .then(function(response) {
+                            console.log(response.data.id);
+                            $scope.creditCard = response.data;
+                        });
+                });
+            };
+            loadextractCreditData(); //first load
+            
+            $scope.$on('update', function () {
+                loadextractCreditData(); // load after update of any person
+            });
 
             $http
                 .get("http://localhost:5000/api/customer/" + $scope.customerId)
@@ -155,17 +201,7 @@ angular
                 $("#modalNewPaymentCredit").modal("show");
             };
 
-            $http
-                .get("http://localhost:5000/api/account/" + $scope.customerId)
-                .then(function(response) {
-                    $http
-                        .get("http://localhost:5000/api/creditCard/" + response.data.id)
-                        .then(function(response) {
-                            console.log(response.data.id);
-                            $scope.creditCard = response.data;
-                        });
-                });
-
+            
 
             $scope.submitFormPaymentCredit = function(description, value, periodId) {
                 if ($scope.modelForm.$valid) {
@@ -208,6 +244,8 @@ angular
                                                 function(response) {
                                                     this.modelForm.reset();
                                                     $("#modalNewPaymentCredit").modal("hide");
+                                                    sharedService.customerWasUpdated();
+                                                    
                                                 },
                                                 function(response) {
                                                     // optional
