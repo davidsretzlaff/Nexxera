@@ -34,8 +34,8 @@ tab extrato cartão de crédito
 - simular transição de uma compra feita no cartão de crédito
 - filtro por período
 
-- Novo cliente
-- Lista clientes
+- novo cliente
+- lista clientes
 
 
 ## Informações Técnicas
